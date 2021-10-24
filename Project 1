@@ -134,3 +134,20 @@ void iteration() { // When the clock ticks
     } // End of y loop
   } // End of x loop
 } // End of function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Reference: https://processing.org/examples/gameoflife.html
