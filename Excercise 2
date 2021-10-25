@@ -1,78 +1,84 @@
-PImage img; 
+PImage cowboy;
+
+Sanddune[] sanddunes = new Sanddune[50]; //array of sanddunes
+Bush[] bushes = new Bush[100]; //array of bushes
 
 void setup() {
-  size(320, 240);
-  // Make a new instance of a PImage by loading an image file
-  img = loadImage("runde_bird_cliffs.jpg");
+  size(700, 400);
+	cowboy = loadImage("cowboy.png");
+  rectMode(CENTER);
+  ellipseMode(CENTER);
+  background(0, 153, 255);
+	
+	  for (int i = 0; i<50; i++) {
+		sanddunes[i] = new Sanddune();
+    bushes[i] = new Bush();
+  }
 }
 
 void draw() {
-  background(0);
-  // The image() function displays the image at a location
-  // in this case the point (0,0).
-  image(img, 0, 0, width, height);
-}
-void setup() {
-  size(480, 270);
-  zoog = new Zoog(width/2, height/2, 60, 60, 16);
-}
-
-void draw() {
-  background(255);
-  // mouseX position determines speed factor
-  float factor = constrain(mouseX/10, 0, 5);
-  zoog.jiggle(factor);
-  zoog.display();
-}
-
-class Zoog {
-  // Zoog's variables
-  float x, y, w, h, eyeSize;
-
-  // Zoog constructor
-  Zoog(float tempX, float tempY, float tempW, float tempH, float tempEyeSize) {
-    x = tempX;
-    y = tempY;
-    w = tempW;
-    h = tempH;
-    eyeSize = tempEyeSize;
+	background(0, 153, 255);
+  stroke(226, 204, 0);
+	
+	clouds();
+	
+	//displays the sanddunes and the cactuses
+	for (int i = 0; i<20;i++){
+	sanddunes[i].displaySanddune();
+  sanddunes[i].rollin();
+  bushes[i].displayBush();
+  bushes[i].tumbleWeed();
   }
+	
+  removeThoseSanddunes();
+	removeThoseBushes();
+  sun();
+	cowboyDrawing();
+		
+}
 
-  // Move Zoog
-  void jiggle(float speed) {
-    // Change the location of Zoog randomly
-    x = x + random(-1, 1)*speed;
-    y = y + random(-1, 1)*speed;
-    // Constrain Zoog to window
-    x = constrain(x, 0, width);
-    y = constrain(y, 0, height);
-  }
-
-  // Display Zoog
-  void display() {
-    // Set ellipses and rects to CENTER mode
-    ellipseMode(CENTER);
-    rectMode(CENTER);
-    // Draw Zoog's arms with a for loop
-    for (float i = y - h/3; i < y + h/2; i += 10) {
-      stroke(0);
-      line(x-w/4, i, x + w/4, i);
+//removes sanddunes once they scroll off the screen
+void removeThoseSanddunes() {
+  for (int i = 0; i<50; i++) {
+    if (sanddunes[i].xPos<-500) {
+      sanddunes[i] = new Sanddune();
     }
-    // Draw Zoog's body
-    stroke(0);
-    fill(175);
-    rect(x, y, w/6, h);
-    // Draw Zoog's head
-    stroke(0);
-    fill(255);
-    ellipse(x, y-h, w, h);
-    // Draw Zoog's eyes
-    fill(0);
-    ellipse(x-w/3, y-h, eyeSize, eyeSize*2);
-    ellipse(x + w/3, y - h, eyeSize, eyeSize*2);
-    // Draw Zoog's legs
-    stroke(0);
-    line(x - w/12, y + h/2, x - w/4, y + h/2 + 10);
-    line(x + w/12, y + h/2, x + w/4, y + h/2 + 10);
   }
+}
+  
+
+//removes the cactuses when they scroll across the screen
+void removeThoseBushes() {
+  for (int i = 0; i<50; i++) {
+    if (bushes[i].xPos<-400) {
+      bushes[i] = new Bush();
+    }
+  }
+}
+
+
+
+//the sun in the background
+void sun(){
+  fill(255, 204, 0);
+  stroke(128, 51, 0,75);
+  strokeWeight(20);
+  ellipse(100,100,100,100);
+  noFill();
+  stroke(180, 0, 0, 90);
+  strokeWeight(20);
+  ellipse(100,100,150,150);
+}
+
+void cowboyDrawing(){
+	image(cowboy,mouseX,mouseY,100,100);
+}
+
+void clouds(){
+	noStroke()
+	fill(255);
+	ellipse(200,200,100,25);
+	ellipse(300,100,100,25);
+	ellipse(600,50,100,25);
+	ellipse(450,150,100,25);
 }
