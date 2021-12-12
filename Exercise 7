@@ -1,0 +1,43 @@
+int [] melonColor = new int [5];     
+{
+  melonColor[0]=color(188, 66, 57); 
+  melonColor[1]=color(93, 93, 93); 
+  melonColor[2]=color(240, 240, 230);
+  melonColor[3]=color(226, 172, 75);
+  melonColor[4]=color(250, 128, 114);
+}
+
+void setup () { 
+  size(1000, 800); 
+  background(175, 191, 183); 
+  noStroke(); 
+  smooth(); 
+  println(melonColor.length);
+
+} 
+
+void draw () { 
+  background(175, 191, 183); 
+
+  for (int k=0; k<100; k++) { 
+   for (int i=0; i<100; i++){
+
+     arc(-5 + i*100,-10 + k*65,80,85, 0, PI);
+
+      fill(melonColor[int(random(melonColor.length))]);
+      stroke(112, 138, 144);
+      strokeWeight(4); 
+      strokeCap(SQUARE);
+  }
+  }
+    delay(120);
+}
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
