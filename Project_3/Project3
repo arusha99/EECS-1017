@@ -1,0 +1,49 @@
+PImage img2;
+                     
+void setup(){
+  size(1000, 600);
+  img2 = loadImage("doge.jpg");
+  img2.resize(1000,600);
+  img2.loadPixels();
+  colorMode(HSB, 100, 100, 100, 100);
+  for(int i=0; i<img2.pixels.length; i++){
+    float h = hue(img2.pixels[i]);
+    float s = saturation(img2.pixels[i]);
+    float b = brightness(img2.pixels[i]);
+    img2.pixels[i] = color((h+50)%100, 100-s, 90, 100);
+  }
+  img2.updatePixels();
+  loadPixels();
+}
+
+void draw(){
+  //image(img2, 0,0);
+  
+  for (int x = 0; x < img2.width; x++) {
+    for (int y = 0; y < img2.height; y++ ) {
+      // Calculate the 1D location from a 2D grid
+      int loc = x + y*img2.width;
+      // Get the R,G,B values from image
+      float r,g,b;
+      r = red (img2.pixels[loc]);
+      //g = green (img.pixels[loc]);
+      //b = blue (img.pixels[loc]);
+      // Calculate an amount to change brightness based on proximity to the mouse
+      float maxdist = 200;//dist(0,0,width,height);
+      float d = dist(x, y, mouseX, mouseY);
+      float adjustbrightness = 55*(maxdist-d)/maxdist;
+      r += adjustbrightness;
+      //g += adjustbrightness;
+      //b += adjustbrightness;
+      // Constrain RGB to make sure they are within 0-255 color range
+      r = constrain(r, 0, 255);
+      //g = constrain(g, 0, 255);
+      //b = constrain(b, 0, 255);
+      // Make a new color and set pixel in the window
+      //color c = color(r, g, b);
+      color c = color(r);
+      pixels[y*width + x] = c;
+    }
+  }
+  updatePixels();
+}
