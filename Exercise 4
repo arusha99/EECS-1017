@@ -1,43 +1,86 @@
-PFont f;
+PImage img;
+
+class Spot {
+  float x, y, r, w, dx, dy, s;
+  boolean isRed, locked;
+  Spot() {
+    x = random(width);
+    y = random(height);
+    //while ( !on() ) {
+    //  x = random(width);
+    //  y = random(height);
+    //}  
+    s = random(1, 4);
+    float a = random(TWO_PI);
+    dx = s*cos(a);
+    dy = s*sin(a);
+    r = random(2, 6);
+    w = random(1, 3);
+    isRed = random(1) < .5;
+    locked = false;
+  }
+  void draw() {
+    float px = x;
+    float py = y;
+    x+=dx;
+    y+=dy;
+    x+=width;
+    y+=height;
+    x%=width;
+    y%=height;
+    if ( on() ) {
+      //if( !isRed ){
+        locked = true;
+      //}
+    } else if( locked ) {
+      x = px;
+      y = py;
+      float a = random(TWO_PI);
+      dx = s*cos(a);
+      dy = s*sin(a);
+    }
+    strokeWeight(w);
+    stroke(0);
+    if ( isRed ) stroke(255, 0, 0);
+    fill(255);
+    ellipse(x, y, r, r);
+  }
+  boolean on() {
+    return( img.get(int(x), int(y)) != color(0) );
+  }
+}
+
+String inputCharacter = "";
+Spot[] spots = new Spot[1000];
 
 void setup() {
-  size(640, 360);
+  size(800, 600);
+  textSize(300);
   background(0);
-
-  // Create the font
-  printArray(PFont.list());
-  f = createFont("Peachy Mochi.ttf", 24);
-  textFont(f);
-  textAlign(CENTER, CENTER);
-} 
+  fill(255);
+  textAlign(CENTER);
+  text(inputCharacter, 400, 400);
+  img = get();
+  background(255);
+  for ( int t = 0; t < spots.length; t++) {
+    spots[t] = new Spot();
+  }
+}
 
 void draw() {
-  background(0);
+  background(255);
+  for( Spot s : spots ) s.draw();
+}
 
-  // Set the left and top margin
-  int margin = 10;
-  translate(margin*4, margin*4);
-
-  int gap = 46;
-  int counter = 35;
-  
-  for (int y = 0; y < height-gap; y += gap) {
-    for (int x = 0; x < width-gap; x += gap) {
-
-      char letter = char(counter);
-      
-      if (letter == 'A' || letter == 'E' || letter == 'I' || letter == 'O' || letter == 'U') {
-        fill(255, 204, 0);
-      } 
-      else {
-        fill(255);
-      }
-
-      // Draw the letter to the screen
-      text(letter, x, y);
-
-      // Increment the counter
-      counter++;
-    }
+void keyTyped() {
+  if (inputCharacter != "")
+  {
+    inputCharacter = "";
+    inputCharacter += key;
   }
+  else
+  {
+    inputCharacter += key;
+  }
+  setup();
 }
